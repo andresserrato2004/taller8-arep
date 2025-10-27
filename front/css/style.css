@@ -1,0 +1,702 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ==================== ESTILOS DE LOGIN ==================== */
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.login-box {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 60px 80px;
+    box-shadow: 4px 6px 4px 6px rgba(0.1, 0.1, 0.1, 0.1);
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    fill: #990000;
+}
+
+h1 {
+    font-size: 31px;
+    font-weight: 700;
+    color: #0f1419;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 16px;
+    font-size: 17px;
+    border: 1px solid #cfd9de;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s;
+    background-color: #ffffff;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #990000;
+    box-shadow: 0 0 0 2px rgba(153, 0, 0, 0.1);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #536471;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #990000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.btn-login:hover {
+    background-color: #770000;
+}
+
+.btn-login:active {
+    background-color: #550000;
+}
+
+.forgot-password {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.forgot-password a {
+    color: #990000;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.signup-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eff3f4;
+    text-align: center;
+}
+
+.signup-section p {
+    color: #536471;
+    font-size: 15px;
+}
+
+.signup-section a {
+    color: #990000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup-section a:hover {
+    text-decoration: underline;
+}
+
+/* Mensaje de error/éxito */
+.message {
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    text-align: center;
+    display: none;
+}
+
+.message.error {
+    background-color: #ffeaea;
+    color: #990000;
+    border: 1px solid #990000;
+}
+
+.message.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #4caf50;
+}
+
+.message.show {
+    display: block;
+}
+
+/* ==================== ESTILOS DE HOME ==================== */
+
+.home-body {
+    display: block;
+    background-color: #f7f9f9;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f4;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon-header {
+    width: 32px;
+    height: 32px;
+    fill: #990000;
+}
+
+.logo-header h1 {
+    font-size: 24px;
+    margin: 0;
+    color: #0f1419;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info span {
+    color: #536471;
+    font-weight: 600;
+}
+
+.btn-logout {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #990000;
+    border: 1px solid #990000;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #990000;
+    color: #ffffff;
+}
+
+/* Layout principal */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 250px 1fr 300px;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Sidebar izquierdo */
+.sidebar-left {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: #0f1419;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: background-color 0.2s;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background-color: #f7f9f9;
+}
+
+.nav-item.active {
+    font-weight: 700;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+/* Área de contenido principal */
+.main-content {
+    min-height: 100vh;
+}
+
+/* Compositor de posts */
+.post-composer {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.composer-header h2 {
+    font-size: 20px;
+    color: #0f1419;
+    margin-bottom: 15px;
+}
+
+.composer-body {
+    display: flex;
+    gap: 12px;
+}
+
+.user-avatar {
+    flex-shrink: 0;
+}
+
+.avatar-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #990000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.composer-input-area {
+    flex: 1;
+}
+
+.composer-input-area textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    font-family: inherit;
+    resize: none;
+    padding: 8px;
+    min-height: 80px;
+}
+
+.composer-input-area textarea::placeholder {
+    color: #536471;
+}
+
+.composer-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #eff3f4;
+    margin-top: 8px;
+}
+
+.char-counter {
+    color: #536471;
+    font-size: 14px;
+}
+
+.btn-post {
+    padding: 10px 24px;
+    background-color: #990000;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-post:hover:not(:disabled) {
+    background-color: #770000;
+}
+
+.btn-post:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Stream de posts */
+.posts-stream {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.stream-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.stream-header h3 {
+    font-size: 20px;
+    color: #0f1419;
+}
+
+.btn-refresh {
+    background: transparent;
+    border: none;
+    color: #990000;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.btn-refresh:hover {
+    background-color: #f7f9f9;
+}
+
+.btn-refresh.spinning {
+    animation: spin 0.5s linear;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 40px;
+    color: #536471;
+}
+
+/* Post individual */
+.post {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid #eff3f4;
+    transition: background-color 0.2s;
+}
+
+.post:last-child {
+    border-bottom: none;
+}
+
+.post:hover {
+    background-color: #f7f9f9;
+}
+
+.post-avatar {
+    flex-shrink: 0;
+}
+
+.post-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+
+.post-author {
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.post-username {
+    color: #536471;
+}
+
+.post-time {
+    color: #536471;
+    font-size: 14px;
+}
+
+.post-text {
+    color: #0f1419;
+    line-height: 1.5;
+    word-wrap: break-word;
+    margin-bottom: 8px;
+}
+
+.post-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: #536471;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.action-btn:hover {
+    background-color: rgba(153, 0, 0, 0.1);
+    color: #990000;
+}
+
+.action-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.like-btn.liked {
+    color: #990000;
+}
+
+.like-btn.liked .action-icon {
+    fill: #990000;
+}
+
+.delete-btn:hover {
+    background-color: rgba(244, 33, 46, 0.1);
+    color: #f4212e;
+}
+
+/* Sidebar derecho */
+.sidebar-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+}
+
+.widget {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.widget h3 {
+    font-size: 18px;
+    color: #0f1419;
+    margin-bottom: 12px;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #536471;
+    font-size: 14px;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #990000;
+    font-size: 16px;
+}
+
+.active-users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.user-item:hover {
+    background-color: #f7f9f9;
+}
+
+.avatar-circle-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #990000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.user-name {
+    color: #0f1419;
+    font-size: 14px;
+    font-weight: 600;
+    flex: 1;
+}
+
+.you-badge {
+    background-color: #990000;
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* Notificaciones */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #990000;
+    color: #ffffff;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    z-index: 10000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar-left,
+    .sidebar-right {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-box {
+        padding: 40px 30px;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    .header-content {
+        padding: 10px 15px;
+    }
+    
+    .logo-header h1 {
+        font-size: 18px;
+    }
+    
+    .main-container {
+        padding: 10px;
+    }
+    
+    .post-composer,
+    .posts-stream {
+        border-radius: 0;
+    }
+    
+    .composer-body {
+        flex-direction: column;
+    }
+}
