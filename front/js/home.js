@@ -1,6 +1,7 @@
 // ==================== CONFIGURACIÓN API ====================
 const USER_SERVICE_URL = 'http://localhost:8081';
-const POST_SERVICE_URL = 'http://localhost:8083';
+//const POST_SERVICE_URL = 'http://localhost:8083';
+const POST_SERVICE_URL = 'https://8amb0dnji4.execute-api.us-east-1.amazonaws.com/dev2';
 const STREAM_SERVICE_URL = 'http://localhost:8082';
 
 // ==================== VARIABLES GLOBALES ====================
