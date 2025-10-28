@@ -34,6 +34,44 @@ public class AuthController {
         }
     }
     
+    // Paso 1: Verificar si el usuario existe
+    @PostMapping("/login/check")
+    public ResponseEntity<?> checkUser(@RequestBody UserIdentifierRequest request) {
+        try {
+            boolean exists = userService.checkUserExists(request.getIdentifier());
+            if (exists) {
+                return ResponseEntity.ok(Map.of(
+                    "exists", true,
+                    "message", "User found. Please enter your password.",
+                    "identifier", request.getIdentifier()
+                ));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                    "exists", false,
+                    "error", "User not found"
+                ));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "error", e.getMessage()
+            ));
+        }
+    }
+    
+    // Paso 2: Autenticar con contraseña
+    @PostMapping("/login/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody PasswordRequest request) {
+        try {
+            AuthenticationResponse response = userService.loginWithPassword(request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "error", e.getMessage()
+            ));
+        }
+    }
+    
+    // Login tradicional (mantener para compatibilidad)
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginRequest request) {
         try {

@@ -51,10 +51,24 @@ public class UserController {
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         try {
             Jwt jwt = (Jwt) authentication.getPrincipal();
-            String username = jwt.getClaimAsString("cognito:username");
+            
+            // Intentar diferentes claims donde puede estar el username
+            String username = jwt.getClaimAsString("username");
+            
+            if (username == null) {
+                username = jwt.getClaimAsString("cognito:username");
+            }
             
             if (username == null) {
                 username = jwt.getClaimAsString("preferred_username");
+            }
+            
+            if (username == null) {
+                // Debug: mostrar todos los claims disponibles
+                return ResponseEntity.status(400).body(Map.of(
+                    "error", "Username not found in JWT",
+                    "availableClaims", jwt.getClaims().keySet()
+                ));
             }
             
             UserResponse user = userService.getUserByUsername(username);
@@ -74,9 +88,20 @@ public class UserController {
         try {
             // Verificar que el usuario está actualizando su propio perfil
             Jwt jwt = (Jwt) authentication.getPrincipal();
-            String username = jwt.getClaimAsString("cognito:username");
+            
+            // Intentar diferentes claims donde puede estar el username
+            String username = jwt.getClaimAsString("username");
+            if (username == null) {
+                username = jwt.getClaimAsString("cognito:username");
+            }
             if (username == null) {
                 username = jwt.getClaimAsString("preferred_username");
+            }
+            
+            if (username == null) {
+                return ResponseEntity.status(400).body(Map.of(
+                    "error", "Username not found in JWT"
+                ));
             }
             
             UserResponse currentUser = userService.getUserByUsername(username);

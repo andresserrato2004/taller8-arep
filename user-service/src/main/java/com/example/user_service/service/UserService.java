@@ -1,9 +1,6 @@
 package com.example.user_service.service;
 
-import com.example.user_service.dto.AuthenticationResponse;
-import com.example.user_service.dto.UserLoginRequest;
-import com.example.user_service.dto.UserRegistrationRequest;
-import com.example.user_service.dto.UserResponse;
+import com.example.user_service.dto.*;
 import com.example.user_service.model.User;
 import com.example.user_service.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -53,6 +50,30 @@ public class UserService {
         
         // Autenticar con Cognito
         return cognitoService.authenticateUser(request);
+    }
+    
+    // Nuevo: Verificar si el usuario existe (Paso 1)
+    public boolean checkUserExists(String identifier) {
+        // Puede ser username o email
+        return userRepository.findByUsername(identifier).isPresent() ||
+               userRepository.findByEmail(identifier).isPresent();
+    }
+    
+    // Nuevo: Login con contraseña (Paso 2)
+    public AuthenticationResponse loginWithPassword(PasswordRequest request) {
+        // Buscar usuario por username o email
+        User user = userRepository.findByUsername(request.getIdentifier())
+            .or(() -> userRepository.findByEmail(request.getIdentifier()))
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        // Crear request para Cognito con el username correcto
+        UserLoginRequest loginRequest = new UserLoginRequest(
+            user.getUsername(), 
+            request.getPassword()
+        );
+        
+        // Autenticar con Cognito
+        return cognitoService.authenticateUser(loginRequest);
     }
     
     @Transactional

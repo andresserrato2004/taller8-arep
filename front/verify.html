@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eciTwitter - Verificar Email</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo">
+            </div>
+            <h1>Verifica tu cuenta</h1>
+            <p style="text-align: center; color: #536471; margin-bottom: 20px;">
+                Hemos enviado un código de verificación a tu correo electrónico.
+                Ingrésalo aquí para activar tu cuenta.
+            </p>
+            
+            <form id="verifyForm">
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="Nombre de usuario o email" required>
+                    <small class="input-hint">El usuario con el que te registraste</small>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" id="code" name="code" placeholder="Código de verificación" required maxlength="6" pattern="[0-9]{6}">
+                    <small class="input-hint">Código de 6 dígitos</small>
+                </div>
+                
+                <button type="submit" class="btn-login">Verificar cuenta</button>
+            </form>
+            
+            <div class="signup-section">
+                <p>¿No recibiste el código? <a href="#" id="resendCode">Reenviar código</a></p>
+                <p><a href="login.html">Volver al inicio de sesión</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/verify.js?v=2"></script>
+</body>
+</html>

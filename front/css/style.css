@@ -53,6 +53,7 @@ h1 {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 16px;
@@ -65,14 +66,24 @@ input[type="password"] {
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
 input[type="password"]:focus {
     border-color: #990000;
     box-shadow: 0 0 0 2px rgba(153, 0, 0, 0.1);
 }
 
 input[type="text"]::placeholder,
+input[type="email"]::placeholder,
 input[type="password"]::placeholder {
     color: #536471;
+}
+
+.input-hint {
+    display: block;
+    font-size: 13px;
+    color: #536471;
+    margin-top: 5px;
+    margin-left: 2px;
 }
 
 .btn-login {
@@ -154,6 +165,12 @@ input[type="password"]::placeholder {
     background-color: #e8f5e9;
     color: #2e7d32;
     border: 1px solid #4caf50;
+}
+
+.message.info {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border: 1px solid #2196f3;
 }
 
 .message.show {

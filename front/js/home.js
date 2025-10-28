@@ -1,15 +1,27 @@
 // ==================== CONFIGURACIÓN API ====================
-// Como es un monolito, las rutas son relativas (mismo servidor Spring Boot)
-const API_BASE_URL = '/api';
+const USER_SERVICE_URL = 'http://localhost:8081';
+const POST_SERVICE_URL = 'http://localhost:8083';
+const STREAM_SERVICE_URL = 'http://localhost:8082';
 
 // ==================== VARIABLES GLOBALES ====================
 let currentUser = null;
+let accessToken = null;
+
+// ==================== UTILIDAD PARA OBTENER HEADERS CON TOKEN ====================
+function getAuthHeaders() {
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+    };
+}
 
 // ==================== LLAMADAS API ====================
 
 async function fetchPosts() {
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`);
+        const response = await fetch(`${POST_SERVICE_URL}/api/posts`, {
+            headers: getAuthHeaders()
+        });
         if (!response.ok) throw new Error('Error al obtener posts');
         return await response.json();
     } catch (error) {
@@ -19,26 +31,30 @@ async function fetchPosts() {
     }
 }
 
-async function createPostAPI(content, username) {
+async function createPostAPI(content) {
     try {
-        const response = await fetch(`${API_BASE_URL}/posts`, {
+        const response = await fetch(`${POST_SERVICE_URL}/api/posts`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content, username })
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ content })
         });
-        if (!response.ok) throw new Error('Error al crear post');
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al crear post');
+        }
         return await response.json();
     } catch (error) {
         console.error('Error:', error);
-        showNotification('Error al publicar post');
+        showNotification('Error al publicar post: ' + error.message);
         return null;
     }
 }
 
 async function deletePostAPI(postId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
-            method: 'DELETE'
+        const response = await fetch(`${POST_SERVICE_URL}/api/posts/${postId}`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return response.ok;
     } catch (error) {
@@ -48,12 +64,11 @@ async function deletePostAPI(postId) {
     }
 }
 
-async function toggleLikeAPI(postId, username) {
+async function toggleLikeAPI(postId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/posts/${postId}/like`, {
+        const response = await fetch(`${POST_SERVICE_URL}/api/posts/${postId}/like`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username })
+            headers: getAuthHeaders()
         });
         if (!response.ok) throw new Error('Error al dar like');
         return await response.json();
@@ -67,9 +82,10 @@ async function toggleLikeAPI(postId, username) {
 
 async function init() {
     const loggedUser = localStorage.getItem('currentUser');
+    accessToken = localStorage.getItem('accessToken');
     
-    if (!loggedUser) {
-        window.location.href = 'Login.html';
+    if (!loggedUser || !accessToken) {
+        window.location.href = 'login.html';
         return;
     }
 
@@ -161,7 +177,7 @@ async function createPost() {
     const content = document.getElementById('postContent').value.trim();
     
     if (content && content.length <= 140) {
-        const result = await createPostAPI(content, currentUser.username);
+        const result = await createPostAPI(content);
         
         if (result) {
             document.getElementById('postContent').value = '';
@@ -200,29 +216,28 @@ async function renderPosts() {
 }
 
 function createPostHTML(post) {
-    const isOwnPost = post.author.username === currentUser.username;
-    const hasLiked = post.likedBy && post.likedBy.includes(currentUser.username);
+    const isOwnPost = post.username === currentUser.username;
     
     return `
         <div class="post" data-post-id="${post.id}">
             <div class="post-avatar">
                 <div class="avatar-circle" style="background-color: #990000">
-                    ${getInitials(post.author.displayName || post.author.username)}
+                    ${getInitials(post.username)}
                 </div>
             </div>
             <div class="post-content">
                 <div class="post-header">
-                    <span class="post-author">${post.author.displayName || post.author.username}</span>
-                    <span class="post-username">@${post.author.username}</span>
-                    <span class="post-time">· ${getFormattedTime(post.timestamp)}</span>
+                    <span class="post-author">${post.username}</span>
+                    <span class="post-username">@${post.username}</span>
+                    <span class="post-time">· ${getFormattedTime(post.createdAt)}</span>
                 </div>
                 <div class="post-text">${escapeHtml(post.content)}</div>
                 <div class="post-actions">
-                    <button class="action-btn like-btn ${hasLiked ? 'liked' : ''}" id="like-${post.id}">
+                    <button class="action-btn like-btn" id="like-${post.id}">
                         <svg viewBox="0 0 24 24" class="action-icon">
                             <g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g>
                         </svg>
-                        ${post.likes > 0 ? post.likes : ''}
+                        ${post.likeCount > 0 ? post.likeCount : ''}
                     </button>
                     ${isOwnPost ? `
                         <button class="action-btn delete-btn" id="delete-${post.id}">
@@ -238,7 +253,7 @@ function createPostHTML(post) {
 }
 
 async function toggleLike(postId) {
-    const result = await toggleLikeAPI(postId, currentUser.username);
+    const result = await toggleLikeAPI(postId);
     if (result) {
         await renderPosts();
     }
@@ -270,7 +285,10 @@ function showNotification(message) {
 function logout() {
     if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
         localStorage.removeItem('currentUser');
-        window.location.href = 'Login.html';
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('idToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = 'login.html';
     }
 }
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eciTwitter - Registro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="logo">
+            </div>
+            <h1>Únete a eciTwitter hoy</h1>
+            
+            <form id="registerForm">
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="Nombre de usuario" required>
+                    <small class="input-hint">El nombre de usuario debe ser único</small>
+                </div>
+                
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+                    <small class="input-hint">Usaremos tu email para verificar tu cuenta</small>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required minlength="8">
+                    <small class="input-hint">Mínimo 8 caracteres, debe incluir mayúsculas, números y símbolos</small>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Crear cuenta</button>
+            </form>
+            
+            <div class="signup-section">
+                <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/register.js?v=1"></script>
+</body>
+</html>
