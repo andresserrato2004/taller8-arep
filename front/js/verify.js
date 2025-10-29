@@ -1,5 +1,6 @@
 // Configuración de URLs de los servicios
-const USER_SERVICE_URL = 'http://localhost:8081';
+//const USER_SERVICE_URL = 'http://localhost:8081';
+const USER_SERVICE_URL = 'https://9aeuu5z7r0.execute-api.us-east-1.amazonaws.com/v1';
 
 // Obtener datos del registro si vienen de la página anterior
 const urlParams = new URLSearchParams(window.location.search);

@@ -1,8 +1,9 @@
 // ==================== CONFIGURACIÓN API ====================
-const USER_SERVICE_URL = 'http://localhost:8081';
+//const USER_SERVICE_URL = 'http://localhost:8081';
+const USER_SERVICE_URL = 'https://9aeuu5z7r0.execute-api.us-east-1.amazonaws.com/v1';
 //const POST_SERVICE_URL = 'http://localhost:8083';
-const POST_SERVICE_URL = 'https://8amb0dnji4.execute-api.us-east-1.amazonaws.com/dev2';
-const STREAM_SERVICE_URL = 'http://localhost:8082';
+const POST_SERVICE_URL = 'https://9aeuu5z7r0.execute-api.us-east-1.amazonaws.com/v1';
+const STREAM_SERVICE_URL = 'https://9aeuu5z7r0.execute-api.us-east-1.amazonaws.com/v1';
 
 // ==================== VARIABLES GLOBALES ====================
 let currentUser = null;
@@ -10,6 +11,8 @@ let accessToken = null;
 
 // ==================== UTILIDAD PARA OBTENER HEADERS CON TOKEN ====================
 function getAuthHeaders() {
+    console.log('DEBUG getAuthHeaders - accessToken:', accessToken);
+
     return {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`
@@ -21,12 +24,42 @@ function getAuthHeaders() {
 async function fetchPosts() {
     try {
         const response = await fetch(`${POST_SERVICE_URL}/api/posts`, {
+            method: 'GET',
             headers: getAuthHeaders()
         });
-        if (!response.ok) throw new Error('Error al obtener posts');
-        return await response.json();
+
+        
+        
+        if (!response.ok) {
+            throw new Error(`Error al obtener posts`);
+        }
+        
+        const data = await response.json();
+        
+        // Agregar log para ver qué devuelve la API
+        console.log('Respuesta de la API:', data);
+        console.log('Tipo de data:', typeof data);
+        console.log('Es array?', Array.isArray(data));
+        
+        // Manejar diferentes formatos de respuesta
+        if (Array.isArray(data)) {
+            return data;
+        } else if (data.body) {
+            // Si viene en formato Lambda con body
+            const bodyData = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+            return Array.isArray(bodyData) ? bodyData : [];
+        } else if (data.posts) {
+            // Si viene como { posts: [...] }
+            return data.posts;
+        } else if (data.data) {
+            // Si viene como { data: [...] }
+            return data.data;
+        } else {
+            console.error('Formato de respuesta inesperado:', data);
+            return [];
+        }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error en fetchPosts:', error);
         showNotification('Error al cargar posts');
         return [];
     }
@@ -84,6 +117,10 @@ async function toggleLikeAPI(postId) {
 async function init() {
     const loggedUser = localStorage.getItem('currentUser');
     accessToken = localStorage.getItem('accessToken');
+
+
+    console.log('DEBUG init - currentUser:', loggedUser ? JSON.parse(loggedUser) : null);
+    console.log('DEBUG init - accessToken:', accessToken);
     
     if (!loggedUser || !accessToken) {
         window.location.href = 'login.html';

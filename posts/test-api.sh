@@ -12,8 +12,8 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuración
-USER_SERVICE_URL="${USER_SERVICE_URL:-http://localhost:8081}"
-POST_SERVICE_URL="${POST_SERVICE_URL:-http://localhost:8083}"
+USER_SERVICE_URL="${USER_SERVICE_URL:-https://9aeuu5z7r0.execute-api.us-east-1.amazonaws.com/v1}"
+POST_SERVICE_URL="${POST_SERVICE_URL:-https://9aeuu5z7r0.execute-api.us-east-1.amazonaws.com/v1/posts}"
 
 echo "========================================="
 echo "Post Service API Tests"
@@ -117,7 +117,8 @@ echo "$RESPONSE" | python3 -m json.tool || echo "$RESPONSE"
 POST_ID=$(echo "$RESPONSE" | python3 -c "import sys, json; print(json.load(sys.stdin).get('id', ''))" 2>/dev/null || echo "")
 
 # Test 4: Obtener todos los posts (público)
-print_section "Test 4: Obtener todos los posts (público)"
+print_section "Test 4: Obtener todo
+s los posts (público)"
 echo "GET $POST_SERVICE_URL/api/posts/public"
 RESPONSE=$(make_request "GET" "$POST_SERVICE_URL/api/posts/public")
 echo "$RESPONSE" | python3 -m json.tool || echo "$RESPONSE"
